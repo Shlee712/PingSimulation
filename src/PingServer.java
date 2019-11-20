@@ -1,7 +1,9 @@
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
+import java.net.InetAddress;
 import java.net.SocketException;
+import java.net.UnknownHostException;
 import java.util.Date;
 import java.util.Random;
 
@@ -27,7 +29,7 @@ public class PingServer {
 			try {
 				System.out.println("Waiting for packet...");
 				socket.receive(inpacket);
-				String s = new String(inpacket.getData());
+				String s = new String(buff);
 				System.out.println("Received from: " +inpacket.getAddress() + " " + inpacket.getPort() + " "+ s);
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -40,7 +42,13 @@ public class PingServer {
 			}
 			if(random.nextDouble() > loss_rate) {
 				outpacket = new DatagramPacket(inpacket.getData(),512,inpacket.getAddress(),inpacket.getPort());
-				System.out.println("Reply sent");
+				try {
+					socket.send(outpacket);
+					System.out.println("Reply sent");
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 			else {
 				System.out.println("Simulating packet loss, not sent");
