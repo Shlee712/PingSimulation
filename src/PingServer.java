@@ -31,27 +31,32 @@ public class PingServer {
 				socket.receive(inpacket);
 				String s = new String(buff);
 				System.out.println("Received from: " +inpacket.getAddress() + " " + inpacket.getPort() + " "+ s);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			try {
-				Thread.sleep( (int) (random.nextDouble() * 2 * average_delay) ) ;
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			if(random.nextDouble() > loss_rate) {
-				outpacket = new DatagramPacket(inpacket.getData(),512,inpacket.getAddress(),inpacket.getPort());
+				
+				
 				try {
-					socket.send(outpacket);
-					System.out.println("Reply sent");
-				} catch (IOException e) {
+					Thread.sleep( (int) (random.nextDouble() * 2 * average_delay) ) ;
+				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-			}
-			else {
-				System.out.println("Simulating packet loss, not sent");
+				
+				
+				if(random.nextDouble() > loss_rate) {
+					outpacket = new DatagramPacket(inpacket.getData(),512,inpacket.getAddress(),inpacket.getPort());
+					try {
+						socket.send(outpacket);
+						System.out.println("Reply sent");
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+				else {
+					System.out.println("Simulating packet loss, not sent");
+				}
+				
+			} catch (IOException e) {
+				e.printStackTrace();
 			}
 		}
 		

@@ -45,7 +45,7 @@ class PingClient extends UDPPinger {
 					if(replyPing != null) {
 						time = new Date();
 						pingTimeArr[replyPing.getNumber()] = (int) (time.getTime() - replyPing.getTime());
-						System.out.println("Received packet from "+addr + " " +portNum+ " "+time.getTime());
+						System.out.println("Received packet # "+replyPing.getNumber()+" from "+addr + " " +portNum+ " "+time.getTime());
 					}
 				} catch (SocketTimeoutException e) {
 					e.printStackTrace();
